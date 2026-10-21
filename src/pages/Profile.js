@@ -1,11 +1,34 @@
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+
+const data = {
+  frontend: {
+    name: "곰돌이사육사",
+    description: "리액트를 좋아하는 개발자",
+  },
+  backend: {
+    name: "달빛사냥꾼",
+    description: "스프링 부트를 좋아하는 개발자",
+  },
+  dba: {
+    name: "천재개발자",
+    description: "DB를 좋아하는 개발자",
+  },
+};
 
 const Profile = () => {
+  const params = useParams();
+  const profile = data[params.name];
   return (
     <div>
-      <h1>소개</h1>
-      <p>리액트 라우터를 사용해 보는 프로젝트 입니다.</p>
-      <Link to="/">홈 페이지로 이동</Link>
+      <h1>사용자 프로필</h1>
+      {profile ? (
+        <>
+          <h2>{profile.name}</h2>
+          <h3>{profile.description}</h3>
+        </>
+      ) : (
+        <p>존재 하지 않는 프로필 입니다.</p>
+      )}
     </div>
   );
 };
