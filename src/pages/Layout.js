@@ -8,7 +8,7 @@ const Container = styled.div`
 `;
 
 const Header = styled.header`
-  height: 20px;
+  height: 40px;
   background-color: lightblue;
 `;
 
@@ -18,8 +18,8 @@ const Main = styled.main`
 `;
 
 const Footer = styled.footer`
-  height: 20px;
-  background-color: bisque;
+  height: 40px;
+  background-color: orange;
 `;
 
 const Layout = () => {
