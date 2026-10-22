@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
+import AxiosApi from "../api/AxiosApi";
 
 /* ───────── 정규식 ───────── */
 // 이메일: 공백·@ 없는 문자 + @ + 도메인 + . + 2자 이상 최상위 도메인
@@ -83,16 +84,22 @@ const Signup = () => {
 
   const isAllValid = isEmail && isPwd && isPwdCheck && isName;
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault();
     if (!isAllValid) return;
 
-    localStorage.setItem("email", inputEmail);
-    localStorage.setItem("pwd", inputPwd);
-    localStorage.setItem("name", inputName);
-
-    alert(`${inputName}님, 회원가입이 완료되었습니다.`);
-    nav("/", { replace: true }); // 로그인 페이지 경로에 맞게 수정
+    const memberSignup = await AxiosApi.memberSignup(
+      inputEmail,
+      inputPwd,
+      inputName,
+    );
+    console.log(memberSignup.data);
+    if (memberSignup.data === true) {
+      alert(`${inputName}님, 회원가입이 완료되었습니다.`);
+      nav("/", { replace: true }); // 로그인 페이지 경로에 맞게 수정
+    } else {
+      alert("회원 가입이 실패 했습니다.");
+    }
   };
 
   return (
