@@ -32,3 +32,18 @@ const Meta = styled.div`
   font-size: 13px;
   color: #888;
 `;
+
+// 부모(BoardList)로부터 게시글 데이터(board)와 클릭 핸들러(onClick)를 props로 받음
+const BoardItem = ({ board, onClick }) => {
+  return (
+    <Item onClick={() => onClick(board.boardId)}>
+      <Title>{board.title}</Title>
+      <Meta>
+        <span>{board.name || board.email}</span>
+        <span>{board.regDate?.substring(0, 10)}</span>
+      </Meta>
+    </Item>
+  );
+};
+
+export default BoardItem;
