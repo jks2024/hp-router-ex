@@ -5,8 +5,8 @@ import Profile from "./pages/Profile";
 import Layout from "./pages/Layout";
 import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
-import BoardList from "./pages/BoardList";
-import BoardWrite from "./pages/BoardWrite";
+import BoardList from "./pages/boards/BoardList";
+import BoardWrite from "./pages/boards/BoardWrite";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
