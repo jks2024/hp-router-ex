@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
+import AxiosApi from "../../api/AxiosApi";
 
 const Container = styled.div`
   max-width: 720px;
@@ -48,3 +49,42 @@ const BackBtn = styled.button`
   border-radius: 18px;
   cursor: pointer;
 `;
+
+const BoardDetail = () => {
+  const { boardId } = useParams(); // 페이지 이동 시 정보 전달
+  const [board, setBoard] = useState();
+  const nav = useNavigate();
+
+  useEffect(() => {
+    const fetchDetail = async () => {
+      try {
+        const res = await AxiosApi.boardDetail(boardId);
+        console.log(res.data);
+        setBoard(res.data);
+      } catch (err) {
+        console.error(err);
+        alert("게시글을 불러오지 못했습니다.");
+        nav("/board");
+      }
+    };
+    fetchDetail();
+  }, [boardId, nav]);
+
+  if (!board) return <Container>불러오는 중...</Container>;
+
+  return (
+    <Container>
+      <Card>
+        <Title>{board.title}</Title>
+        <Meta>
+          <span>{board.name || board.email}</span>
+          <span>{board.regDate?.substring(0, 10)}</span>
+        </Meta>
+        <Content>{board.content}</Content>
+      </Card>
+      <BackBtn onClick={() => nav("/board")}>목록으로</BackBtn>
+    </Container>
+  );
+};
+
+export default BoardDetail;

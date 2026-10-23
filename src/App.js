@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/SignUp";
 import BoardList from "./pages/boards/BoardList";
 import BoardWrite from "./pages/boards/BoardWrite";
+import BoardDetail from "./pages/boards/BoardDetail";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/board" element={<BoardList />} />
           <Route path="/board/write" element={<BoardWrite />} />
+          <Route path="/board/:boardId" element={<BoardDetail />} />
 
           <Route path="/about" element={<About />} />
           <Route path="/profile/:name" element={<Profile />} />

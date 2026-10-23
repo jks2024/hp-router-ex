@@ -1,4 +1,5 @@
 import axios from "axios"; // 비동기 통신 라이브러리
+import BoardDetail from "../pages/boards/BoardDetail";
 const HM_DOMAIN = "http://localhost:8111";
 
 const AxiosApi = {
@@ -30,6 +31,9 @@ const AxiosApi = {
     return await axios.get(HM_DOMAIN + "/board/list");
   },
   // 게시글 상세 조회
+  boardDetail: async (id) => {
+    return await axios.get(HM_DOMAIN + `/board/${id}`);
+  },
   // 게시글 페이지 조회
   // 게시글 수정
   // 게시글 삭제
