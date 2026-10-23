@@ -41,9 +41,28 @@ const AxiosApi = {
 
   // comment controller
   // 댓글 쓰기
+  commentWrite: async (boardId, content, email) => {
+    return await axios.post(HM_DOMAIN + "/comment/write", {
+      boardId,
+      content,
+      email,
+    });
+  },
   // 댓글 목록 조회
+  commentList: async (boardId) => {
+    return await axios.get(HM_DOMAIN + `/comment/list/${boardId}`);
+  },
   // 댓글 수정
+  commentModify: async (commentId, content, email) => {
+    return await axios.put(HM_DOMAIN + `/comment/${commentId}`, {
+      content,
+      email,
+    });
+  },
   // 댓글 삭제
+  commentDelete: async (commentId) => {
+    return await axios.delete(HM_DOMAIN + `/comment/${commentId}`);
+  },
 
   // member constroller
   // 회원 목록 조회
@@ -51,6 +70,7 @@ const AxiosApi = {
     return await axios.get(HM_DOMAIN + "/member/list");
   },
   // 회원 정보 수정
+
   // 회원 목록 페이지 조회
   // 회원 삭제
   // 회원 상세 조회
