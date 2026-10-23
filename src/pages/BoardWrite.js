@@ -56,3 +56,67 @@ const CancelBtn = styled.button`
   border-radius: 18px;
   cursor: pointer;
 `;
+
+const BoardWrite = () => {
+  const [title, setTitle] = useState(""); // 제목
+  const [content, setContent] = useState(""); // 내용
+  const nav = useNavigate(); // 페이지 이동
+
+  // 제목, 내용 모두 입력돼야 등록 버튼 활성화
+  const isValid = title.trim() !== "" && content.trim() !== "";
+
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    if (!isValid) return;
+
+    // 로그인할 때 저장해 둔 이메일을 작성자로 사용
+    const email = localStorage.getItem("email");
+    if (!email) {
+      alert("로그인이 필요합니다.");
+      nav("/");
+      return;
+    }
+
+    try {
+      const res = await AxiosApi.boardWrite(title, content, email);
+      console.log(res.data);
+      if (res.data) {
+        alert("게시글이 등록되었습니다.");
+        nav("/board", { replace: true }); // 뒤로가기로 작성 화면에 다시 오지 않도록
+      } else {
+        alert("게시글 등록에 실패했습니다.");
+      }
+    } catch (err) {
+      console.log(err);
+      alert("서버와 통신 중 오류가 발생했습니다.");
+    }
+  };
+
+  return (
+    <Container>
+      <Form onSubmit={onSubmit}>
+        <Title>글쓰기</Title>
+        <Input
+          value={title}
+          placeholder="제목을 입력하세요"
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <TextArea
+          value={content}
+          placeholder="내용을 입력하세요"
+          onChange={(e) => setContent(e.target.value)}
+        />
+        <BtnRow>
+          <CancelBtn type="button" onClick={() => nav(-1)}>
+            취소
+          </CancelBtn>
+          <Button type="submit" enabled={isValid}>
+            등록
+          </Button>
+        </BtnRow>
+      </Form>
+    </Container>
+  );
+};
+
+export default BoardWrite;
