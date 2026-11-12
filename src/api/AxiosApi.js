@@ -8,7 +8,7 @@ const AxiosApi = {
   },
   // 회원 가입 (POST)
   memberSignup: async (email, pwd, name) => {
-    return await AxiosInstance.get("/auth/signup", { email, pwd, name });
+    return await AxiosInstance.post("/auth/signup", { email, pwd, name });
   },
   // 로그인 (POST)
   memberLogin: async (email, pwd) => {

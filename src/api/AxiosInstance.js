@@ -34,6 +34,7 @@ AxiosInstance.interceptors.response.use(
     if (err.response?.status !== 401 || isAuthCall || original._retry) {
       return Promise.reject(err);
     }
+
     original._retry = true; // 무한 재시도 방지
 
     try {
@@ -50,6 +51,7 @@ AxiosInstance.interceptors.response.use(
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("refreshToken", data.refreshToken); // Rotation: 새 값으로 교체
       original.headers.Authorization = `Bearer ${data.accessToken}`;
+
       return AxiosInstance(original); // 원래 요청 재시도
     } catch (e) {
       // Refresh 만료 · 재사용 감지 · 강제 만료 → 다시 로그인
