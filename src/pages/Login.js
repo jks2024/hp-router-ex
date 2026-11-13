@@ -113,7 +113,9 @@ const Login = () => {
         <KakaoBtn
           type="button"
           onClick={() => (window.location.href = KAKAO_AUTH_URL)}
-        ></KakaoBtn>
+        >
+          카카오 로그인
+        </KakaoBtn>
         <SignupText>
           계정이 없으신가요?
           <Link to="/signup">회원가입</Link>
