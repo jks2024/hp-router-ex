@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 import AxiosApi from "../../api/AxiosApi";
 import AnswerView from "./AnswerView";
@@ -45,16 +45,33 @@ const AiAssistant = () => {
   const [results, setResults] = useState([]); // 최근 질문이 위로
   const [loading, setLoading] = useState(false);
 
-  const onAsk = async (e) => {
+  // 홈 화면에서 /ai?q=질문 으로 들어오면 그 질문을 바로 보냄
+  const [searchParams, setSearchParams] = useSearchParams();
+  const autoAsked = useRef(false); // 개발 모드(StrictMode)에서 effect 가 두 번 실행돼도 한 번만 질문
+  useEffect(() => {
+    const q = searchParams.get("q");
+    if (q && !autoAsked.current) {
+      autoAsked.current = true;
+      setSearchParams({}, { replace: true }); // 새로고침해도 다시 보내지 않도록 주소에서 지움
+      ask(q);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const onAsk = (e) => {
     e.preventDefault();
-    if (!question.trim() || loading) return;
+    ask(question);
+  };
+
+  // 기존 onAsk 의 본문을 ask(q) 로 옮기고 question → q 로 바꿈
+  const ask = async (q) => {
+    if (!q.trim() || loading) return;
     setLoading(true);
     try {
-      const { data } = await AxiosApi.ragChat(question, scope);
-      setResults((prev) => [{ question, result: data }, ...prev]);
+      const { data } = await AxiosApi.ragChat(q, scope);
+      setResults((prev) => [{ question: q, result: data }, ...prev]);
       setQuestion("");
     } catch (err) {
-      // 서버의 ErrorResponse 메시지 그대로 (502: "AI 서비스에 연결할 수 없습니다.")
       alert(err.response?.data?.message ?? "질문 처리 중 오류가 발생했습니다.");
     } finally {
       setLoading(false);
